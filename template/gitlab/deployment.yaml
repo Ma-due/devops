@@ -19,6 +19,17 @@ spec:
         - containerPort: 80
         - containerPort: 443
         - containerPort: 22
+        volumeMounts:
+        - mountPath: /etc/gitlab/gitlab.rb
+          name: rb
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      volumes:
+      - hostPath:
+          path: /root/devops/template/gitlab/gitlab.rb
+        name: rb
 ---
 apiVersion: v1
 kind: Service
