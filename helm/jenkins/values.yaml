@@ -1,0 +1,71 @@
+# Default values for jenkins.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: jenkins
+namespaceOverride: jenkins
+
+replicaCount: 1
+
+image:
+  repository: maduee2/jenkins
+  tag: latest
+
+httpPort:
+  targetPort: 8080
+
+jnlpPort:
+  targetPort: 50000
+
+homeDir: /var/jenkins_home
+
+pvc:
+  name: jenkins-pvc
+  accessModes: ["ReadWriteMany"]
+  storage: 10Gi
+
+tolerations:
+- key: node-role.kubernetes.io/control-plane
+  operator: Exists
+  effect: NoSchedule
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: jenkins-admin
+
+service:
+  serviceName: jenkins-service
+  type: NodePort
+
+servicePorts:
+  - name: http-port
+    port: 8080
+    targetPort: 8080
+  - name: jnlp-port
+    port: 50000
+    targetPort: 50000
+
+role:
+  name: jenkins
+
+roleBinding:
+  name: jenkins-role-binding
+
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create","delete","get","list","patch","update","watch"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create","delete","get","list","patch","update","watch"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get","list","watch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]

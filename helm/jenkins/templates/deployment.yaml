@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "jenkins.name" . }}
+  namespace: {{ template "jenkins.namespace" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "jenkins.name" . }}
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+            fsGroup: 1000
+            runAsUser: 1000
+      containers:
+        - name: {{ template "jenkins.name" . }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            {{- if .Values.httpPort }}
+            - name: http
+              containerPort: {{ .Values.httpPort.targetPort }}
+            {{- end }}
+            {{- if .Values.jnlpPort }}
+            - name: jnlp-port
+              containerPort: {{ .Values.jnlpPort.targetPort }}
+            {{- end }}
+          volumeMounts:
+            - name: jenkins-vol
+              mountPath: {{ .Values.homeDir }}
+      volumes:
+        - name: jenkins-vol
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}

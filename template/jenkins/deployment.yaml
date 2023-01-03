@@ -12,10 +12,11 @@ spec:
       labels:
         app: jenkins
     spec:
-      serviceAccountName: jenkins-admin
+      nodeName: master
       securityContext:
-            fsGroup: 1000
-            runAsUser: 1000
+        runAsUser: 1000
+        fsGroup: 1000
+      serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts
@@ -29,12 +30,12 @@ spec:
               mountPath: /var/jenkins_vol
       volumes:
         - name: jenkins-vol
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: jenkins-pvc
       tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
         effect: NoSchedule
-
 # Service Config
 ---
 apiVersion: v1

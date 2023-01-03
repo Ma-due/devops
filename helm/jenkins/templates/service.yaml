@@ -1,0 +1,16 @@
+# Service Config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.service.serviceName }}
+spec:
+  selector:
+    app: {{ .Release.Name }}
+  type: {{ .Values.service.type }}
+  ports:
+  {{- range .Values.servicePorts }}
+  - name: {{ .name }}
+    port: {{ .port  }}
+    targetPort: {{ .targetPort }}
+  {{- end }}
