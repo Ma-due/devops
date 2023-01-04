@@ -4,8 +4,13 @@ metadata:
   name: {{ .Values.pvc.name }}
   namespace: {{ template "jenkins.namespace" . }}
 spec:
+  storageClassName: {{ .Values.volume.storageClass | default "''" }}
   accessModes:
- {{ toYaml .Values.pvc.accessModes | indent 4 }}
+ {{ toYaml .Values.volume.accessModes | indent 4 }}
   resources:
     requests:
-      storage: {{ .Values.pvc.storage }}
+      storage: {{ .Values.volume.storage }}
+  {{- if .Values.pvc.selector }}
+  selector:
+{{ toYaml .Values.pvc.selector | indent 4}}
+{{- end }}

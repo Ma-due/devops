@@ -21,8 +21,26 @@ homeDir: /var/jenkins_home
 
 pvc:
   name: jenkins-pvc
-  accessModes: ["ReadWriteMany"]
+  selector:
+    matchExpressions:
+      - key: type
+        operator: In
+        values:
+          - nfs
+
+pv:
+  name: jenkins-pv
+  type: nfs
+  reclaimPolicy: Retain
+
+volume:
+  storageClass: ""
   storage: 10Gi
+  accessModes: ["ReadWriteMany"]
+  type:
+    nfs:
+      server: "10.138.0.25"
+      path: /mnt/shared
 
 tolerations:
 - key: node-role.kubernetes.io/control-plane
@@ -69,3 +87,5 @@ rules:
   - apiGroups: [""]
     resources: ["secrets"]
     verbs: ["get"]
+
+

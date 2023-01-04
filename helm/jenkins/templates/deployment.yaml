@@ -7,11 +7,11 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "jenkins.name" . }}
+      app: {{ template "jenkins.label" . }}
   template:
     metadata:
       labels:
-        app: jenkins
+        app: {{ template "jenkins.label" . }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
