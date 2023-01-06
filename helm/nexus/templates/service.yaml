@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "nexus.name" . }}-service
+  namespace: {{ template "nexus.namespace" . }}
+spec:
+  selector:
+    app: {{ template "nexus.label" . }}
+  type: {{ .Values.service.type }}
+  ports:
+  {{- range .Values.servicePorts }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+  {{- end }}

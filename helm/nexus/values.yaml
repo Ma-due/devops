@@ -1,0 +1,66 @@
+# Default values for nexus.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+nameOverride: nexus
+namespaceOverride: nexus
+
+repository: sonatype/nexus3
+tag: latest
+
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "1000m"
+  requests:
+    memory: "2Gi"
+    cpu: "500m"
+
+ports:
+  - containerPort: 8081
+  - containerPort: 5000
+
+nexusDir: /nexus-data/nfs
+pvc:
+  name: nexus-pvc
+
+tolerations:
+- key: node-role.kubernetes.io/control-plane
+  operator: "Exists"
+  effect: "NoSchedule"
+
+service:
+  type: NodePort
+
+servicePorts:
+  - name: nexus-web
+    port: 8081
+    targetPort: 8081
+  - name: docker
+    port: 5000
+    targetPort: 5000
+
+pv:
+  name: nexus-pv
+  type: nfs
+
+pvc:
+  name: nexus-pvc
+  selector:
+    matchExpressions:
+      - key: type
+        operator: In
+        values:
+          - nfs
+
+volume:
+  storage: "10Gi"
+  reclaimPolicy: Retain
+  accessModes:
+    - ReadWriteMany
+  type:
+    nfs:
+      server: "10.138.0.25"
+      path: "/mnt/shared/nexus-data"
+  storageClass: '""'
+

@@ -3,9 +3,15 @@ kind: PersistentVolumeClaim
 metadata:
   name: jenkins-pvc
 spec:
-  storageClassName: local-storage
+  storageClassName: ""
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
+  selector:
+    matchExpressions:
+      - key: type
+        operator: In
+        values:
+          - nfs

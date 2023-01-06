@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "gitlab.name" . }}
+  namespace: {{ template "gitlab.namespace" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "gitlab.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "gitlab.name" . }}
+    spec:
+      containers:
+      - name: {{ template "gitlab.name" . }}
+        image: {{ .Values.gitlabimage }}
+        ports:
+        {{- range .Values.ports }}
+        - containerPort: {{ .containerPort }}
+        {{- end }}
+        volumeMounts:
+        {{- range .Values.volumeMounts }}
+        - mountPath: {{ .mountPath }}
+          name: {{ .name }}
+        {{- end }}
+      volumes:
+      {{- range .Values.volumes }}
+      - name: {{ .name }}
+        persistentVolumeClaim:
+          claimName: {{ .claimName }}
+      {{- end }}
+{{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+{{- end }}

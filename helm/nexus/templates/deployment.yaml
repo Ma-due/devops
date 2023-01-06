@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "nexus.name" . }}
+  namespace: {{ template "nexus.namespace" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "nexus.label" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "nexus.label" . }}
+    spec:
+      containers:
+        - name: {{ template "nexus.name" . }}
+          image: {{ .Values.repository }}:{{ .Values.tag }}
+          {{- if .Values.resources }}
+          resources:
+          {{ toYaml .Values.resources.limit | indent 12 }}
+          {{- end }}
+          ports:
+          {{- range .Values.ports }}
+            - containerPort: {{ .containerPort }}
+          {{- end }}
+          volumeMounts: 
+            - name: nexus-data
+              mountPath: {{ .Values.nexusDir }}
+      volumes:
+        - name: nexus-data
+          persistentVolumeClaim:
+            claimName: {{ .Values.pvc.name }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}

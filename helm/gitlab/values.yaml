@@ -1,0 +1,64 @@
+nameOverride: gitlab
+namespaceOverride: gitlab
+
+gitlabimage: gitlab/gitlab-ce
+
+ports:
+  - containerPort: 80
+  - containerPort: 443
+  - containerPort: 22
+
+volumeMounts:
+  - mountPath: /var/opt/gitlab
+    name: data
+  - mountPath: /var/log/gitlab
+    name: log
+  - mountPath: /etc/gitlab
+    name: config
+
+tolerations:
+- key: node-role.kubernetes.io/control-plane
+  operator: "Exists"
+  effect: "NoSchedule"
+
+servicePorts:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+serviceType: NodePort
+
+volumes:
+  - name: data
+    claimName: pvc-data
+  - name: log
+    claimName: pvc-log
+  - name: config
+    claimName: pvc-config
+
+volume:
+  data:
+    pvName: pv-data
+    pvcName: pvc-data
+    dataSize: 10Gi
+
+  log:
+    pvName: pv-log
+    pvcName: pvc-log
+    dataSize: 5Gi
+
+  config:
+    pvName: pv-config
+    pvcName: pvc-config
+    dataSize: 1Gi
+
+  type: nfs
+
+accessModes:
+- ReadWriteOnce
+
+nfs:
+  dataPath: /mnt/shared/gitlab/data
+  logPath: /mnt/shared/gitlab/log
+  configPath: /mnt/shared/gitlab/config
+  server: "10.138.0.25"
