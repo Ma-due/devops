@@ -32,7 +32,12 @@ spec:
           volumeMounts:
             - name: jenkins-vol
               mountPath: {{ .Values.homeDir }}
+            - name: docker
+              mountPath: /var/run/docker.sock
       volumes:
+        - name: docker
+          hostPath: 
+            path: /var/run/docker.sock
         - name: jenkins-vol
           persistentVolumeClaim:
             claimName: {{ .Values.pvc.name }}
