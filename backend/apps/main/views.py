@@ -29,7 +29,6 @@ class UserCreate(APIView):
         return JenkinsService().create_group(name)
 
 
-
 class AppCreate(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse("app create get api")

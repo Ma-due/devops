@@ -19,7 +19,8 @@ class JenkinsService:
 
         print("header", header)
         print("url", url)
-        return requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
+        post = requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
+        return post.status_code, post.text
 
     def create_job(self, user_name, app_name):
         header = {'Content-Type:text/xml'}
