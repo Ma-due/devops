@@ -26,7 +26,7 @@ class UserCreate(APIView):
         3. Jenkins folder 생성
         '''
         name = request.data.get('name')
-        JenkinsService.create_group(name)
+        JenkinsService().create_group(name)
         return HttpResponse("user create post api")
 
 
