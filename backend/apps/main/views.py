@@ -1,7 +1,8 @@
 from django.shortcuts import render
-
-
+from services import jenkins_service
+from services import gitlab_service
 # Create your views here.
 
 def main(request):
-    return render(request, 'index.html')
+
+    return rendser(request, 'index.html')
