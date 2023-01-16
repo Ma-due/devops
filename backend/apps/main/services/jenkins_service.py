@@ -1,6 +1,7 @@
 import os
 
 import requests
+from django.http import HttpResponse
 
 
 class JenkinsService:
@@ -20,7 +21,7 @@ class JenkinsService:
         print("header", header)
         print("url", url)
         post = requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
-        return post.status_code, post.text
+        return HttpResponse(post)
 
     def create_job(self, user_name, app_name):
         header = {'Content-Type:text/xml'}
