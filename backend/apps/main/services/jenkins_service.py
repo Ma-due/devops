@@ -8,7 +8,7 @@ class JenkinsService:
     _JENKINS_TOKEN = ("root", "11d0ffe0740df9240b1ba4a6918733ed5f")
 
     def create_group(self, user_name):
-        header = {'Content-Type:text/xml'}
+        header = {"Content-Type": "text/xml"}
         file = open('/root/backend/apps/main/source/folder_template.xml', 'rb')
         url = f'{self._JENKINS_URL}/createItem?name={user_name}'
 
