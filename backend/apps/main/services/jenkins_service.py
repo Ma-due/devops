@@ -4,8 +4,12 @@ import requests
 
 
 class JenkinsService:
-    _JENKINS_URL = "http://jenkins-service.jenkins.svc"
+    _JENKINS_URL = "http://jenkins-service.jenkins.svc:8080"
     _JENKINS_TOKEN = ("root", "11d0ffe0740df9240b1ba4a6918733ed5f")
+
+    def get_main(self):
+        get = requests.get(url=self._JENKINS_URL)
+        return get
 
     def create_group(self, user_name):
         header = {"Content-Type": "text/xml"}
