@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 
@@ -7,12 +9,14 @@ class JenkinsService:
 
     def create_group(self, user_name):
         header = {'Content-Type:text/xml'}
-        file = open('../source/folder_template.xml', 'rb')
+        file = open('main/source/folder_template.xml', 'rb')
         url = f'{self._JENKINS_URL}/createItem?name={user_name}'
+
         requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
 
     def create_job(self, user_name, app_name):
         header = {'Content-Type:text/xml'}
         file = open('../source/job_template.xml', 'rb')
         url = f'{self._JENKINS_URL}/{user_name}/createItem?name={app_name}'
+
         requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
