@@ -9,7 +9,8 @@ class JenkinsService:
 
     def create_group(self, user_name):
         header = {"Content-Type": "text/xml"}
-        file = open('/root/backend/apps/main/source/folder_template.xml', 'rb')
+        template = open('/root/backend/apps/main/source/folder_template.xml', 'rb')
+        file = {"file": template}
         url = f'{self._JENKINS_URL}/createItem?name={user_name}'
 
         requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
