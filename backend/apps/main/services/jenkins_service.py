@@ -17,7 +17,9 @@ class JenkinsService:
         file = {"file": template}
         url = f'{self._JENKINS_URL}/createItem?name={user_name}'
 
-        requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
+        print("header", header)
+        print("url", url)
+        return requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
 
     def create_job(self, user_name, app_name):
         header = {'Content-Type:text/xml'}
