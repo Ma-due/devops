@@ -16,7 +16,8 @@ class Jenkins(Enum):
     TOKEN = ("root", "11d0ffe0740df9240b1ba4a6918733ed5f")
 
 class XMLPath(Enum):
-    LOCAL_FOLDER = '/root/devops/backend/apps/main/source/folder_template.xml'
-    LOCAL_JOB = '/root/devops/backend/apps/main/source/job_template.xml'
-    DEPLOY_FOLDER = '/Users/parkchangheon/my/git/devops/backend/apps/main/source/folder_template.xml'
-    DEPLOY_JOB = '/Users/parkchangheon/my/git/devops/backend/apps/main/source/job_template.xml'
+    DEPLOY_FOLDER = '/root/devops/backend/apps/main/source/folder_template.xml'
+    DEPLOY_JOB = '/root/devops/backend/apps/main/source/job_template.xml'
+
+    LOCAL_FOLDER = '/Users/parkchangheon/my/git/devops/backend/apps/main/source/folder_template.xml'
+    LOCAL_JOB = '/Users/parkchangheon/my/git/devops/backend/apps/main/source/job_template.xml'
