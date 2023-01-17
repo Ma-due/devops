@@ -1,6 +1,6 @@
 import requests
 import xml.etree.ElementTree as ET
-from value import Jenkins, Gitlab
+from .value import Jenkins, Gitlab
 
 
 class JenkinsService:
