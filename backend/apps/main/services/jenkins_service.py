@@ -1,29 +1,31 @@
-import os
-
 import requests
-from django.http import HttpResponse
+import xml.etree.ElementTree as ET
+from value import Jenkins, Gitlab
 
 
 class JenkinsService:
-    _JENKINS_URL = "http://jenkins-service.jenkins.svc:8080"
-    _JENKINS_TOKEN = ("root", "11d0ffe0740df9240b1ba4a6918733ed5f")
-
     def get_main(self):
-        get = requests.get(url=self._JENKINS_URL)
+        get = requests.get(Jenkins.URL.value)
         return get
 
-    def create_group(self, user_name):
-        header = {"Content-Type": "text/xml"}
-        template = open('/root/backend/apps/main/source/folder_template.xml', 'rb')
-        file = {"file": template}
-        url = f'{self._JENKINS_URL}/createItem?name={user_name}'
+    def create_folder(self, user_name):
+        header = {'Content-Type': 'text/xml'}
+        read = open('/root/backend/apps/main/source/folder_template.xml') \
+            .read()
+        url = f'{Jenkins.URL}/createItem?name={user_name}'
 
-        post = requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
-        return HttpResponse(post.status_code, post.text)
+        post = requests.post(url, headers=header, data=read, auth=Jenkins.TOKEN.value)
+        return post.status_code, post.text
 
-    def create_job(self, user_name, app_name):
+    def create_job(self, user_name, app_name, kind):
+        root = ET.parse('/root/backend/apps/main/source/job_template.xml') \
+            .getroot()
+        url_tag = root.find('.//url')
+        url_tag.text = f'{Gitlab.URL.value}/{user_name}/{app_name}'
+        data = ET.tostring(root, encoding='utf8')
+
         header = {'Content-Type:text/xml'}
-        file = open('../source/job_template.xml', 'rb')
-        url = f'{self._JENKINS_URL}/{user_name}/createItem?name={app_name}'
+        url = f'{Jenkins.URL.value}/{user_name}/createItem?name={app_name}'
+        post = requests.post(url, headers=header, data=data, auth=Jenkins.TOKEN.value)
 
-        requests.post(url, headers=header, files=file, auth=self._JENKINS_TOKEN)
+        return post.status_code, post.text

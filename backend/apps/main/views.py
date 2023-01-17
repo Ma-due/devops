@@ -8,14 +8,15 @@ from rest_framework.views import APIView
 
 
 # Create your views here.
-
+JENKINS = JenkinsService()
+GITLAB = GitlabService()
 
 class Main(APIView):
     def get(self, request, *args, **kwargs):
         return render(request, 'index.html')
 
 
-class UserCreate(APIView):
+class User(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse("user create get api")
 
@@ -26,18 +27,35 @@ class UserCreate(APIView):
         3. Jenkins folder 생성
         '''
         name = request.data.get('name')
-        return JenkinsService().create_group(name)
+        passwd = request.data.get('password')
+        email = request.data.get('email')
+
+        JENKINS.create_folder(name)
+        GITLAB.create_user(name, email, passwd)
+
+        return HttpResponse("user create post api")
 
 
-class AppCreate(APIView):
+class App(APIView):
     def get(self, request, *args, **kwargs):
         return HttpResponse("app create get api")
 
     def post(self, request, *args, **kwargs):
         '''
+        :param
+        user name
+        app name
+        template
         1. Gitlab 프로젝트 생성
         2. Jenkins job 생성
         '''
+
+        name = request.data.get('name')
+        app_name = request.data.get('app_name')
+        kind = request.data.get('kind')
+        namespace_id = JENKINS.create_job(name, app_name, kind)
+        GITLAB.create_project(namespace_id, app_name, kind)
+
         return HttpResponse("app create post api")
 
 
