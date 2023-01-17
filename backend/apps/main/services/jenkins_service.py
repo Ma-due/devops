@@ -8,11 +8,11 @@ class JenkinsService:
         get = requests.get(Jenkins.URL.value)
         return get
 
-    def create_folder(self, user_name):
+    def create_folder(self, name):
         header = {'Content-Type': 'text/xml'}
         read = open('/root/backend/apps/main/source/folder_template.xml') \
             .read()
-        url = f'{Jenkins.URL}/createItem?name={user_name}'
+        url = f'{Jenkins.URL.value}/createItem?name={name}'
 
         post = requests.post(url, headers=header, data=read, auth=Jenkins.TOKEN.value)
         return post.status_code, post.text
