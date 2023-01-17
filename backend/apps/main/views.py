@@ -53,8 +53,9 @@ class App(APIView):
         name = request.data.get('name')
         app_name = request.data.get('app_name')
         kind = request.data.get('kind')
-        JENKINS.create_job(name, app_name, kind)
-        #GITLAB.create_project(namespace_id, app_name, kind)
+        JENKINS.create_job(name, app_name)
+        namespace_id = GITLAB.get_user_namespace_id(name)
+        GITLAB.create_project(namespace_id, app_name, kind)
 
         return HttpResponse("app create post api")
 

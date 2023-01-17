@@ -3,6 +3,7 @@ from enum import Enum
 
 class Gitlab(Enum):
     URL = "http://gitlab-service.default.svc"
+    # URL = "http://34.168.30.192:30100"
     KIND = {
         'spring': 2,
     }
