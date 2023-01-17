@@ -1,4 +1,5 @@
 <flow-definition plugin="workflow-job@1254.v3f64639b_11dd">
+<actions/>
 <description/>
 <keepDependencies>false</keepDependencies>
 <properties>
@@ -20,13 +21,13 @@
 <configVersion>2</configVersion>
 <userRemoteConfigs>
 <hudson.plugins.git.UserRemoteConfig>
-<url>http://gitlab-service.default.svc/test-user/spring-template.git</url>
+<url>http://gitlab-service.default.svc//{edit}</url>
 <credentialsId>gitlab-admin</credentialsId>
 </hudson.plugins.git.UserRemoteConfig>
 </userRemoteConfigs>
 <branches>
 <hudson.plugins.git.BranchSpec>
-<name>*/main</name>
+<name>*/master</name>
 </hudson.plugins.git.BranchSpec>
 </branches>
 <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
