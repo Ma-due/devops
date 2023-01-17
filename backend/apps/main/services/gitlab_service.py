@@ -1,5 +1,5 @@
 import json
-from value import Gitlab
+from .value import Gitlab
 
 import requests
 
