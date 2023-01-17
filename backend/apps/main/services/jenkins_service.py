@@ -1,12 +1,12 @@
 import requests
 import xml.etree.ElementTree as ET
-from .value import Jenkins, Gitlab
+from .value import Jenkins, Gitlab, XMLPath
 
 
 class JenkinsService:
     def create_folder(self, name):
         header = {'Content-Type': 'text/xml'}
-        read = open('/Users/parkchangheon/my/git/devops/backend/apps/main/source/folder_template.xml') \
+        read = open(XMLPath.DEPLOY_FOLDER.value) \
             .read()
         url = f'{Jenkins.URL.value}/createItem?name={name}'
 
@@ -14,7 +14,7 @@ class JenkinsService:
         return post.text
 
     def create_job(self, name, app_name):
-        root = ET.parse('/Users/parkchangheon/my/git/devops/backend/apps/main/source/job_template.xml') \
+        root = ET.parse(XMLPath.DEPLOY_JOB.value) \
             .getroot()
         url_tag = root.find('.//url')
         url_tag.text = f'{Gitlab.URL.value}/{name}/{app_name}.git'
