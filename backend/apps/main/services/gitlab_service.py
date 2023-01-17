@@ -6,14 +6,14 @@ import requests
 
 class GitlabService:
 
-    def create_user(self, user_name, email, password):
+    def create_user(self, name, email, password):
         header = {"Content-Type": "application/json", "PRIVATE_TOKEN": Gitlab.TOKEN.value}
-        data = {"name": user_name, "user_name": user_name, "email": email, "password": password,
+        data = {"name": name, "user_name": name, "email": email, "password": password,
                 "skip_confirmation": True}
         url = f'{Gitlab.URL.value}/api/v4/users'
 
         post = requests.post(url, headers=header, data=json.dumps(data))
-        return post.json()["namespace_id"]
+        print(post.json())
 
     def create_project(self, namespace, app_name, kind):
         header = f'Content-Type: application/json, PRIVATE_TOKEN: {Gitlab.TOKEN.value}'
