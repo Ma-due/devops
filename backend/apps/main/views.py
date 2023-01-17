@@ -30,10 +30,10 @@ class User(APIView):
         passwd = request.data.get('password')
         email = request.data.get('email')
 
-        JENKINS.create_folder(name)
-        GITLAB.create_user(name, email, passwd)
+        folder = JENKINS.create_folder(name)
+        gitlab_create_user = GITLAB.create_user(name, email, passwd)
 
-        return HttpResponse("user create post api")
+        return HttpResponse(200, folder + gitlab_create_user)
 
 
 class App(APIView):

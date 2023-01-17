@@ -13,7 +13,7 @@ class GitlabService:
         url = f'{Gitlab.URL.value}/api/v4/users'
 
         post = requests.post(url, headers=header, data=json.dumps(data))
-        print(post.json())
+        return post.text
 
     def create_project(self, namespace, app_name, kind):
         header = f'Content-Type: application/json, PRIVATE_TOKEN: {Gitlab.TOKEN.value}'

@@ -15,7 +15,7 @@ class JenkinsService:
         url = f'{Jenkins.URL.value}/createItem?name={name}'
 
         post = requests.post(url, headers=header, data=read, auth=Jenkins.TOKEN.value)
-        return post.status_code, post.text
+        return post.text
 
     def create_job(self, user_name, app_name, kind):
         root = ET.parse('/root/backend/apps/main/source/job_template.xml') \
