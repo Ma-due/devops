@@ -6,15 +6,16 @@ from .value import Jenkins, Gitlab, XMLPath
 class JenkinsService:
     def create_folder(self, name):
         header = {'Content-Type': 'text/xml'}
-        read = open(XMLPath.DEPLOY_FOLDER.value) \
+        read = open(XMLPath.FOLDER.value, 'rb') \
             .read()
         url = f'{Jenkins.URL.value}/createItem?name={name}'
 
         post = requests.post(url, headers=header, data=read, auth=Jenkins.TOKEN.value)
+        print(post.status_code, post.text)
         return post.text
 
     def create_job(self, name, app_name):
-        root = ET.parse(XMLPath.DEPLOY_JOB.value) \
+        root = ET.parse(XMLPath.JOB.value) \
             .getroot()
         url_tag = root.find('.//url')
         url_tag.text = f'{Gitlab.URL.value}/{name}/{app_name}.git'
