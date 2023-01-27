@@ -2,7 +2,7 @@ import json
 
 from django.http import HttpResponse
 
-from .value import Argocd, Gitlab
+from value import Argocd, Gitlab
 import requests
 
 
@@ -19,7 +19,9 @@ class ArgocdService:
         headers = {"Content-Type": "application/json",
                    "Authorization": f'Bearer {Argocd.TOKEN.value}'}
 
-        data = json.load(open(Argocd.APP.value, 'r'))
+        with open(Argocd.APP.value, 'r') as f:
+            data = json.load(f)
+
         data["metadata"]["name"] = f'{user_name}-{app_name}'
         data["spec"]["destination"]["namespace"] = user_name
         repo_url = f'{Gitlab.URL.value}/{user_name}/{app_name}.git'
@@ -28,7 +30,7 @@ class ArgocdService:
         data["spec"]["source"]["helm"]["parameters"][1]["value"] = app_name
         data["spec"]["source"]["helm"]["parameters"][2]["value"] = build_number
 
-        post = requests.post(url, data=json.dumps(data), headers=headers)
+        post = requests.post(url, json=data, headers=headers)
         return HttpResponse(post.status_code, post.text)
 
     def app_sync(self, app_name):
