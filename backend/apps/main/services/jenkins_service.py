@@ -1,5 +1,8 @@
 import requests
 import xml.etree.ElementTree as ET
+
+from django.http import HttpResponse
+
 from .value import Jenkins, Gitlab, XMLPath
 
 
@@ -26,3 +29,21 @@ class JenkinsService:
         post = requests.post(url, headers=header, data=data, auth=Jenkins.TOKEN.value)
 
         return post.status_code, post.text
+
+    def build_job(self, name, app_name):
+        url = f'{Jenkins.URL.value}/job/{name}/job/{app_name}/build'
+        post = requests.post(url, auth=Jenkins.TOKEN.value)
+
+        print(post.text, "build text")
+        return HttpResponse(post.status_code, post.text)
+
+    def build_number(self, name, app_name):
+        """
+        bulid status
+        f'{Jenkins.URL.value}/job/{name}/job/{app_name}/lastBuild/api/json
+        result null or success
+        """
+        url = f'{Jenkins.URL.value}/job/{name}/job/{app_name}/lastSuccessfulBuild/buildNumber'
+        get = requests.get(url, auth=Jenkins.TOKEN.value)
+
+        return get

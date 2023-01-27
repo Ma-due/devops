@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import User, App, Build
+from .views import User, App, Build, Deploy
 from apps.main import views
 
 app_name = 'main'
@@ -10,5 +10,6 @@ urlpatterns = [
     path('', views.Main.as_view()),
     path('user', User.as_view()),
     path('app', App.as_view()),
-    path('build', Build.as_view())
+    path('build', Build.as_view()),
+    path('deploy', Deploy.as_view())
 ]

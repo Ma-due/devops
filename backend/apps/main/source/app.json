@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "name": "app_name"
+  },
+  "spec": {
+    "destination": {
+      "namespace": "user_name",
+      "server": "https://kubernetes.default.svc"
+    },
+    "project": "default",
+    "syncPolicy": {
+      "automated": {
+        "prune": true
+      }
+    },
+    "source": {
+      "path": "charts/",
+      "repoURL": "test",
+      "helm": {
+        "parameters": [
+          {
+            "name": "user_name",
+            "value": "user_name"
+          },
+          {
+            "name": "app_name",
+            "value": "app_name"
+          },
+          {
+            "name": "tag",
+            "value": "tag"
+          }
+        ]
+      }
+    }
+  }
+}
