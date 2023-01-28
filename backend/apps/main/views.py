@@ -68,6 +68,6 @@ class Deploy(APIView):
         app_name = request.data.get('app_name')
 
         build_number = JENKINS.build_number(user_name, app_name)
-        create_app = ARGOCD.create_app(user_name, app_name, build_number)
+        create_app = ARGOCD.create_app(user_name, app_name, build_number.text)
 
         return create_app

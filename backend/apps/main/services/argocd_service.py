@@ -29,7 +29,7 @@ class ArgocdService:
         data["spec"]["source"]["helm"]["parameters"][2]["value"] = build_number
 
         post = requests.post(url, json=data, headers=headers)
-        return post.status_code, post.text
+        return HttpResponse(post.status_code, post.text)
 
     def app_sync(self, app_name):
         url = f'{Argocd.URL.value}/api/v1/applications/{app_name}/sync'
