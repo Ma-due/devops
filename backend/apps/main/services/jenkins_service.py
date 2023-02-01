@@ -14,7 +14,6 @@ class JenkinsService:
         url = f'{Jenkins.URL.value}/createItem?name={name}'
 
         post = requests.post(url, headers=header, data=read, auth=Jenkins.TOKEN.value)
-        print(post.status_code, post.text)
         return post.text
 
     def create_job(self, name, app_name):
@@ -34,7 +33,6 @@ class JenkinsService:
         url = f'{Jenkins.URL.value}/job/{name}/job/{app_name}/build'
         post = requests.post(url, auth=Jenkins.TOKEN.value)
 
-        print(post.text, "build text")
         return HttpResponse(post.status_code, post.text)
 
     def build_number(self, name, app_name):
