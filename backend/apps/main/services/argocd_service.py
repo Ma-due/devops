@@ -23,10 +23,10 @@ class ArgocdService:
         data["metadata"]["name"] = f'{user_name}-{app_name}'
         data["spec"]["destination"]["namespace"] = user_name
         repo_url = f'{Gitlab.URL.value}/{user_name}/{app_name}.git'
-        data["spec"]["source"]["repoURL"] = repo_url
-        data["spec"]["source"]["helm"]["parameters"][0]["value"] = user_name
-        data["spec"]["source"]["helm"]["parameters"][1]["value"] = app_name
-        data["spec"]["source"]["helm"]["parameters"][2]["value"] = build_number
+        data["spec"]["resource"]["repoURL"] = repo_url
+        data["spec"]["resource"]["helm"]["parameters"][0]["value"] = user_name
+        data["spec"]["resource"]["helm"]["parameters"][1]["value"] = app_name
+        data["spec"]["resource"]["helm"]["parameters"][2]["value"] = build_number
 
         post = requests.post(url, json=data, headers=headers)
         return HttpResponse(post.status_code, post.text)
